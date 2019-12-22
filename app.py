@@ -1,5 +1,9 @@
 #Enter 'python app.py' to launch webserver in terminal.
 
+#git add *
+#git commit
+#git push origin master
+
 #Commands used for launching db:
 #from app import db (after writing py) - imports our db to shell
 #db.create_all()
