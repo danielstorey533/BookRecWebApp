@@ -10,18 +10,21 @@
 
     <table>
         <tr>
-            <th>Books</th>
-            <th>Added</th>
-            <th>Actions</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Average Rating</th>
+            <th>Cover</th>
         </tr>
         <!--Grabs a task from tasks -- runs for entirety of tasks count -->
 
         <tr>
-            {% if allBooks %}
-            <td>{{ allBooks[1] }}</td>
-            {% else %}
-            <td>wrong</td>
-            {% endif %}
+            {% for allBook in allBooks %}
+            <td>{{ allBook[9] }}</td>
+            <td><i>{{ allBook[7] }}</i></td>
+            <td>{{ allBook[12] }}</td>
+            <td><img src={{ allBook[21] }}></img></td>
+            </tr>
+            {% endfor %}
         </tr>
     </table>
 
