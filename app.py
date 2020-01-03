@@ -19,6 +19,13 @@ from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+#Imports .db connection from connection.py
+from connection import connection
+
+
+
+conn, c = connection()
+
 #Sets up the app and database. Enter 'python app.py' to launch in terminal.
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -39,25 +46,10 @@ class Todo(db.Model):
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
-    #If POST request is sent to route, execute statement
-    if request.method == 'POST':
-        #Creates new task from input then tries to commit to database
-        #then redirects to index.html
-        task_content = request.form['content']
-        new_task = Todo(content=task_content)
+    allBooks = print(c.fetchall())
+    conn.commit()
 
-        try:
-            db.session.add(new_task)
-            db.session.commit()
-            return redirect('/')
-        except:
-            #error message if commit does not execute
-            return 'There was an issue adding task'
-
-    else:
-        #Displays all db tasks based on date created
-        tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html', tasks=tasks)
+    return render_template('index.html', allBooks = allBooks)
 
 
 @app.route('/delete/<int:id>')
