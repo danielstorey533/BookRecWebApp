@@ -10,16 +10,19 @@
 
     <table>
         <tr>
-            <th>Task</th>
+            <th>Books</th>
             <th>Added</th>
             <th>Actions</th>
         </tr>
         <!--Grabs a task from tasks -- runs for entirety of tasks count -->
-        {% for i in allBooks %}
+
         <tr>
-            <td>{{ i }}</td>
+            {% if allBooks %}
+            <td>{{ allBooks[1] }}</td>
+            {% else %}
+            <td>wrong</td>
+            {% endif %}
         </tr>
-        {% endfor %}
     </table>
 
     <form action="/" method="POST">

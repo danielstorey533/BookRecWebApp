@@ -31,6 +31,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
+allBooks = c.fetchall()
+conn.commit()
+
 #Database class and rules
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,9 +48,6 @@ class Todo(db.Model):
 #methods enable us to POST and GET from the route (database).
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
-    allBooks = print(c.fetchall())
-    conn.commit()
 
     return render_template('index.html', allBooks = allBooks)
 
