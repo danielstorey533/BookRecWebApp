@@ -40,4 +40,4 @@ class Evaluator:
             for ratings in recommendations[:10]:
                 # Only return the BOOK ID.
                 r.append(ratings[0])
-            return 
+            return r

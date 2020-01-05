@@ -15,6 +15,7 @@ table, td, th {
 table {
     border-collapse: collapse;
     width: 100%;
+    background-color:#FFFFE0;
 }
 
 th {

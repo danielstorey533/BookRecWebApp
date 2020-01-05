@@ -14,6 +14,7 @@
             <th>Author</th>
             <th>Average Rating</th>
             <th>Cover</th>
+            <th>Goodreads</th>
         </tr>
         <!--Grabs a task from tasks -- runs for entirety of tasks count -->
 
@@ -23,6 +24,8 @@
             <td><i>{{ bookResult[7] }}</i></td>
             <td>{{ bookResult[12] }}</td>
             <td><img src={{ bookResult[21] }}></img></td>
+            <!--Uses the stored goodbooks ID for bookResult to display a link to the goodreads page for the book. -->
+            <td><button onclick="window.location.href = 'https://www.goodreads.com/book/show/{{bookResult[1]}}';">Click Here</button></td>
             </tr>
             {% endfor %}
         </tr>

@@ -42,17 +42,20 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-# Instantiate a random recommender.
-#r = recommend.SVDRecommender(get_db);
+# Instantiate SVD Recommender..
+r = recommend.SVDRecommender(get_db);
 
 # Instantiate a random recommender.
-r = recommend.RandomRecommender(get_db)
+#r = recommend.RandomRecommender(get_db)
 
 #Sets up index route which will display index() function when route is visited.
 #index() function calls render_template method(which knows to check templates folder) to return our index.html.
 #methods enable us to POST and GET from the route (database).
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM books")
     allBooks = c.fetchall()
     return render_template('index.html', allBooks = allBooks)
 
