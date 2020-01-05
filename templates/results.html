@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>BookRec Results</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Recommender Results</h1>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Average Rating</th>
+            <th>Cover</th>
+        </tr>
+        <!--Grabs a task from tasks -- runs for entirety of tasks count -->
+
+        <tr>
+            {% for bookResult in bookResults %}
+            <td>{{ bookResult[9] }}</td>
+            <td><i>{{ bookResult[7] }}</i></td>
+            <td>{{ bookResult[12] }}</td>
+            <td><img src={{ bookResult[21] }}></img></td>
+            </tr>
+            {% endfor %}
+        </tr>
+    </table>
+
+    <form action="/" method="POST">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Add Task">
+    </form>
+</div>
+{% endblock %}

@@ -14,54 +14,53 @@
 
 #Imports flask from Flask class -- Flask is a web framework for Python.
 #Flask uses Jinja for templates; which is a web template engine.
-from flask import Flask, render_template, url_for, request, redirect
-#SQLAlchemy is the Python SQL toolkit - used for connecting to our book and ratings sql
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, url_for, request, redirect, g
 from datetime import datetime
+import recommend
+import sqlite3
 
-#Imports .db connection from connection.py
 from connection import connection
-
-
 
 conn, c = connection()
 
+
+
 #Sets up the app and database. Enter 'python app.py' to launch in terminal.
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
+DATABASE = 'test.db'
 
-allBooks = c.fetchall()
-conn.commit()
+# https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/
+def get_db():
+    db = getattr(g, "_database", None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
-#Database class and rules
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, "_database", None)
+    if db is not None:
+        db.close()
 
-    def __repr__(self):
-        return '<Task %r>' % self.id
+# Instantiate a random recommender.
+#r = recommend.SVDRecommender(get_db);
+
+# Instantiate a random recommender.
+r = recommend.RandomRecommender(get_db)
 
 #Sets up index route which will display index() function when route is visited.
 #index() function calls render_template method(which knows to check templates folder) to return our index.html.
 #methods enable us to POST and GET from the route (database).
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
+    allBooks = c.fetchall()
     return render_template('index.html', allBooks = allBooks)
 
 
-@app.route('/delete/<int:id>')
-def delete(id):
-    task_to_delete = Todo.query.get_or_404(id)
-
-    try:
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        return redirect('/')
-    except:
-        return 'There was a problem deleting that task'
+@app.route('/results', methods=['POST', 'GET'])
+def results():
+    bookResults = r.get()
+    return render_template('results.html', bookResults = bookResults)
 
 #Enables debug mode which displays errors on webpage.
 if __name__ == "__main__":
