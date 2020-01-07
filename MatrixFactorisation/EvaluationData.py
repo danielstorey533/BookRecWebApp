@@ -38,11 +38,16 @@ class EvaluationData:
     def GetFullAntiTestSet(self):
         return self.fullAntiTestSet
     
+    #Removed a line here for converting the inner ID to raw ID for the test subject; was causing a bug when
+    #I ported the code to read from SQL instead of .csv; documentation said that when read from a file
+    #the default value was a string so I am assuming the line was not needed, program is back to full functionality
+    #after removal.
     def GetAntiTestSetForUser(self, testSubject):
         trainset = self.fullTrainSet
         fill = trainset.global_mean
         anti_testset = []
-        u = trainset.to_inner_uid(str(testSubject))
+        print(testSubject)
+        u = testSubject
         user_items = set([j for (j, _) in trainset.ur[u]])
         anti_testset += [(trainset.to_raw_uid(u), trainset.to_raw_iid(i), fill) for
                                  i in trainset.all_items() if

@@ -1,0 +1,7 @@
+-Change recommender algorithm to read from SQL instead of CSV - DONE
+-Set up login and registration, user ID's starting after max ratings user id
+-Test out the recommender system by hardcoding in ratings for a new user and then having them generate results.
+-Change the all books display to have a 5 star rating and submit input.
+
+
+

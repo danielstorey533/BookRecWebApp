@@ -8,8 +8,15 @@ from surprise import Reader
 
 from collections import defaultdict
 import numpy as np
+import pandas as pd
+import sqlite3
 
 class GoodBooks:
+    
+    
+
+
+        
 
     book_id_to_name = {}
     name_to_book_id = {}
@@ -19,16 +26,25 @@ class GoodBooks:
     def loadGoodBooksLatestSmall(self):
 
         # Look for files relative to the directory we are running from
-        # os.chdir(os.path.dirname(sys.argv[0]))
+        os.chdir(os.path.dirname(sys.argv[0]))
 
         ratingsDataset = 0
         self.book_id_to_name = {}
         self.name_to_book_id = {}
+        
+        conn = sqlite3.connect('./test.db', check_same_thread=False)
+        c = conn.cursor()
+        c.execute("SELECT * FROM ratings")
 
-        reader = Reader(line_format='user item rating', sep=',', skip_lines=1)
+        reader = Reader(rating_scale=(1, 5))
+        
+        a = pd.read_sql('SELECT * FROM ratings', conn, index_col=None)
 
-        ratingsDataset = Dataset.load_from_file(self.ratingsPath, reader=reader)
+        ratingsDataset = Dataset.load_from_df(a, reader=reader)
 
+        #Making sure the SQL is being read in correct format; can remove this line when code is working.
+        print(a)
+        
         with open(self.booksPath, newline='', encoding='ISO-8859-1') as csvfile:
                 bookReader = csv.reader(csvfile)
                 next(bookReader)  #Skip header line
@@ -39,6 +55,8 @@ class GoodBooks:
                     self.name_to_book_id[bookName] = book_id
 
         return ratingsDataset
+    
+        
 
     def getUserRatings(self, user):
         userRatings = []

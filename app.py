@@ -48,6 +48,9 @@ r = recommend.SVDRecommender(get_db);
 # Instantiate a random recommender.
 #r = recommend.RandomRecommender(get_db)
 
+# Instantiate KNN Recommender..
+#r = recommend.KNNRecommender(get_db);
+
 #Sets up index route which will display index() function when route is visited.
 #index() function calls render_template method(which knows to check templates folder) to return our index.html.
 #methods enable us to POST and GET from the route (database).
