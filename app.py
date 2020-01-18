@@ -115,7 +115,8 @@ def index():
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT * FROM books")
-    allBooks = c.fetchall()
+    #FIXME: Using fetchmany currently to not load all 10k books onto webpage; need to fix how books load; possibly add pages.
+    allBooks = c.fetchmany(100)
     userSession = flask_login.current_user.id
     return render_template('index.html', allBooks = allBooks, userSession = userSession)
 
@@ -167,23 +168,33 @@ def protected():
 
 
 #Post route which will be called on rating form submission (user five star input).
-@app.route('/rate', methods=['POST'])
+@app.route('/rate/<int:book_id>', methods=['POST'])
 @flask_login.login_required
-def rate():
+def rate(book_id):
+    conn = get_db()
+    c = conn.cursor()
     rating = request.form.get('rating')
-    user_id = flask_login.current_user.id
+    user_id = 1
     #FIXME: Hardcoding this as 1 for now; will need to call the allBook id from index.html template somehow.
-    book_id = 1
 
-    q = c.execute('SELECT * FROM ratings WHERE ratings.book_id == ' + str(book_id) + ' and ratings.user_id == ' + str(user_id))
+
+    q = c.execute('SELECT * FROM ratings WHERE book_id == ' + str(book_id) + ' and user_id == ' + str(user_id))
     check = q.fetchall()
 
     if(len(check) < 1):
-        c.execute('INSERT into ratings (user_id, book_id, rating) values(?, ?, ?)',
+        c.execute('INSERT INTO ratings (user_id, book_id, rating) VALUES (?, ?, ?)',
         (user_id, book_id, rating))
+        conn.commit()
+        
+        print('successfully added')
+        return 'Successfully added'
 
-    else: c.execute('UPDATE ratings set rating == ' + rating + ' WHERE book_id == ' + book_id 
-    + ' AND user_id == ' + user_id)
+    else: c.execute('UPDATE ratings set rating == ' + str(rating) + ' WHERE book_id == ' + str(book_id) 
+    + ' AND user_id == ' + str(user_id))
+
+    print('successfully updated')
+    return ' Successfully added'
+
 
 
 

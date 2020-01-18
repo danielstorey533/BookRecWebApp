@@ -43,7 +43,7 @@
             <td><i>{{ allBook[7] }}</i></td>
             <td>{{ allBook[12] }}</td>
             <td><img src={{ allBook[21] }}></img></td>
-            <td><form action='/rate' method='POST' target='dummyframe'>
+            <td><form action='/rate/{{allBook[0]}}' method='POST' target='dummyframe'>
                 <select name="rating">
                     <option value="0">0</option>
                     <option value="1">1</option>
