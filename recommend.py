@@ -10,7 +10,7 @@ import numpy as np
 class RecommendationSystem(object):
     """ Base class for the recommendation system. """
     def __init__(self, get_db):
-        self.get_db = get_db;
+        self.get_db = get_db
 
 class RandomRecommender(RecommendationSystem):
 
@@ -48,7 +48,7 @@ class SVDRecommender(RecommendationSystem):
         evaluator.AddAlgorithm(SVD(), "SVD")
         evaluator.Evaluate(False)
 
-        book_ids = evaluator.SampleTopNRecs(gb, testSubject = 15)
+        book_ids = evaluator.SampleTopNRecs(gb, testSubject = 12)
 
         conn = self.get_db()
         cur  = conn.cursor()
@@ -60,6 +60,9 @@ class SVDRecommender(RecommendationSystem):
         conn.commit()
 
         return books
+
+
+
 
 class KNNRecommender(RecommendationSystem):
 
@@ -85,7 +88,10 @@ class KNNRecommender(RecommendationSystem):
         evaluator.Evaluate(False)
 
 
-        book_ids = evaluator.SampleTopNRecs(gb, testSubject = 5)
+        
+
+
+        book_ids = evaluator.SampleTopNRecs(gb, testSubject = 12)
 
         conn = self.get_db()
         cur  = conn.cursor()

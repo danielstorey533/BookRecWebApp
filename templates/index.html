@@ -5,15 +5,35 @@
 {% endblock %}
 
 {% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">BookRec</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/results">Recommendations</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        Logged in as: {{userSession}}
+      </span>
+    </div>
+  </nav>
+</br>
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
 <div class="content">
-    <h1>Book Recommender</h1>
-
     <table>
         <tr>
             <th>Title</th>
             <th>Author</th>
             <th>Average Rating</th>
             <th>Cover</th>
+            <th>Rating</th>
         </tr>
         <!--Grabs a task from tasks -- runs for entirety of tasks count -->
 
@@ -23,6 +43,17 @@
             <td><i>{{ allBook[7] }}</i></td>
             <td>{{ allBook[12] }}</td>
             <td><img src={{ allBook[21] }}></img></td>
+            <td><form action='/rate' method='POST' target='dummyframe'>
+                <select name="rating">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <input type='submit' name='submit'/>
+             </form></td>
             </tr>
             {% endfor %}
         </tr>
